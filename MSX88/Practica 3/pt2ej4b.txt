@@ -1,0 +1,39 @@
+eoi equ 20h
+imr equ 21h
+int0 equ 24h
+int1 equ 25h
+int2 equ 26h
+Nf10 equ 15 ;*4
+org 60
+ip10 dw rut_f10
+org 1000h
+cadena db "vamos las interrupciones"
+fin db ?
+cant db 0
+org 3000h
+rut_f10: 
+push ax ;salvo
+push bx
+mov bx, offset cadena
+mov al, offset fin - offset cadena
+int 7 ;int 7 recibe en bx el dato y en cl la cantidad
+inc cant
+cmp cant, 5
+jnz sigo ;si no termine, sigo
+mov al, 11111111b ;deshabilito las interrupciones si llegue a 5
+out imr, al
+sigo: mov al, eoi ;eoi es para finalizar
+out eoi, al ;siempre ambos
+pop bx ;recupero
+pop ax
+iret ;retorno
+org 2000h
+mov dx, 5
+cli ;configuracion de ints
+mov al, 11111110b ;f10
+out imr, al ;se lo paso al imr
+mov al, Nf10 ;le digo donde esta
+out int0, al ;se lo paso al int
+sti
+loop: jmp loop
+end

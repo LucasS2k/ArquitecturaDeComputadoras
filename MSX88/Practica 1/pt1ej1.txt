@@ -1,0 +1,14 @@
+org 1000h
+mensaje DB "mensaje de prueba"
+cant db 0
+org 2000h
+mov bx, offset mensaje
+lazo: mov al, [bx] 
+cmp al , 'a'
+jnz sigo
+inc cant
+sigo: inc bx
+cmp bx, offset cant
+jnz lazo
+hlt
+END

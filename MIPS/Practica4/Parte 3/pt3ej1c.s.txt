@@ -1,0 +1,23 @@
+.data
+string: .asciiz "ArquiTectuRa de ComPutaDoras"
+cant: .word 0
+A: .ascii "A"
+Z: .ascii "Z"
+.code
+dadd $t0, $t0, $0
+dadd $t2, $0,$0
+lbu $a0, A ($0)
+lbu $a1, Z ($0)
+dadd $t5, $0, $0
+dadd $t4, $0, $0
+loop: lbu $t1, string($t5)
+beqz $t1, fin
+slt $t3, $a1, $t1 # $t3 = 1 si $a1 ('Z') < $t1
+bnez $t3, noes
+slt $t3, $t1, $a0 # $t3 = 1 si $t1 < $a0 ('A')
+bnez $t3, noes
+daddi $t4, $t4, 1
+noes: daddi $t5, $t5, 1
+j loop
+fin: sd $t4, cant($0)
+halt

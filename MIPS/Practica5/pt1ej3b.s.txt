@@ -1,0 +1,6 @@
+.data
+.code 
+ddiv $t6,$t3,$t5
+dmul $t4,$t3,$t5
+daddi $t2,$t3,5
+halt

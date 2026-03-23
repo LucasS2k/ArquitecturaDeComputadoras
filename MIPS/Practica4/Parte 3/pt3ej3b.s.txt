@@ -1,0 +1,18 @@
+.data
+S: .asciiz "cadena"
+L: .asciiz "a"
+B: .word 0
+.code
+daddi $a0, $0, S 
+lbu $a1, L ($0)
+jal contiene
+
+halt
+contiene: dadd $v0, $0, $0
+sigo: lbu $t1, 0 ($a0)
+beqz $t1, fin
+beq $t1, $a1, equal
+daddi $a0, $a0, 1
+j sigo
+equal: daddi $v0, $v0, 1
+fin: jr $ra

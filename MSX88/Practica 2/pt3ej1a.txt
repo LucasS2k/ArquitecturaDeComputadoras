@@ -1,0 +1,28 @@
+pb equ 31h
+cb equ 33h
+
+org 1000h
+cadena db "unlp"
+
+fin db ?
+org 2000h
+mov al,0
+out cb, al
+
+mov  bx,offset cadena
+mov cl, offset fin  - offset cadena
+
+loop: mov al,0 
+out pb,al
+
+mov al, [bx]
+out pb, al
+inc bx
+dec cl
+jnz loop
+
+mov al, 255
+out pb, al
+org 3000h
+
+end

@@ -1,0 +1,19 @@
+.data 
+ res: .word 0 
+ .code 
+ daddi $t1, $0, 4 
+ daddi $t2, $0, 3 
+ daddi $t3, $0, 0
+ loop: dadd $t3, $t3, $t2 #1 por dos ciclos
+ daddi $t1, $t1, -1
+ bnez $t1, loop #4 por dos ciclos
+ sd $t3, res($0) #4-1 bts
+ halt
+# bts = 3 (4-1)
+#instrucciones = 17 (3 + 4*3 + 2)
+#instrucciones que atascan = 
+#dadd $t3, $t3, $t2 por dos ciclos
+#bnez $t1, loop por dos ciclos
+# atascos en total
+#cpi = 17 + 13 + 4  /  17 = 2
+

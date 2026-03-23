@@ -1,0 +1,32 @@
+#.data
+#A: .word 0
+#R: .word 0
+#B: .word 0
+#C: .word 0
+#.code
+#ld $t1, A($0)
+#dsll $t1, $t1, 2
+#ld $t2, B($0)
+#dsub $t1, $t1, $t2
+#ld $t3, C($0)
+#dadd $t1, $t1, $t3
+#sd $t1, R($0)
+#halt
+
+.data
+A: .word 0
+R: .word 0
+B: .word 0
+C: .word 0
+.code
+ld $t1, A($0)
+ld $t2, B($0)
+dsll $t1, $t1, 2
+ld $t3, C($0)
+dsub $t1, $t1, $t2
+dadd $t1, $t1, $t3
+sd $t1, R($0)
+halt
+#12 ciclos
+#8 instrucciones
+#0 atascos

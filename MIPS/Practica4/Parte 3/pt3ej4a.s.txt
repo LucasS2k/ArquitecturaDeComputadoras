@@ -1,0 +1,14 @@
+.data
+V: .word 1,2,3,4,5
+.code
+daddi $a0, $0, V
+daddi $a1, $0, 5
+jal suma
+halt
+suma: daddi $v0, $0, 0
+loop: ld $t0, 0 ($a0)
+dadd $v0, $v0, $t0
+daddi $a1, $a1, -1
+daddi $a0, $a0, 8
+bnez $a1, loop
+jr $ra

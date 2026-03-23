@@ -1,0 +1,42 @@
+ORG 1000H
+TEXT db "ingrese la contraseña"
+PASS db "cont"
+ING db 0,0,0,0
+ORG 2000H
+mov dh, 5
+mov dl, 4
+loop5:
+mov bx, offset TEXT
+mov al, offset PASS - offset TEXT
+int 7
+
+mov cl,4
+mov bx, offset ING
+leer: int 6
+inc bx
+dec cl
+jnz leer
+
+mov cl, 0
+
+comparar: mov bx, offset pass
+mov al, cl
+mov ch, [bx]
+add bx, ax
+mov ah, [bx]
+
+mov bx, offset ING
+add bx, ax
+mov al, [bx]
+cmp ah,al
+jnz error
+inc cl
+cmp cl, 4
+jnz comparar
+int 0
+error: dec dh
+jz fin
+jmp loop5
+
+fin: INT 0
+END

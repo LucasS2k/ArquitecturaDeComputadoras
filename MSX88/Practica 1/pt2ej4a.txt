@@ -1,0 +1,12 @@
+ORG 1000H
+DATO db 65
+ORG 2000H
+mov cl, 91
+lazo: mov bx, offset DATO
+mov al, 1
+int 7
+inc DATO
+cmp cl, DATO
+jnz lazo
+INT 0
+END

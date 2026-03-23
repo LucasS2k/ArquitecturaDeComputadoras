@@ -1,0 +1,48 @@
+cont equ 10h
+comp equ 11h
+eoi equ 20h
+imr equ 21h
+int0 equ 24h
+int1 equ 25h
+int2 equ 26h
+Ntimer equ 15 ;*4
+org 60
+ipT dw rut_timer
+org 1000h
+cadena db "vamos las interrupciones"
+fin db ?
+ACUMULAR db 1
+org 3000h
+rut_timer: 
+push ax ;salvo
+push bx
+mov bx, offset cadena
+mov al, offset fin - offset cadena
+int 7 ;int 7 recibe en bx el dato y en cl la cantidad
+inc ACUMULAR
+cmp ACUMULAR, 255
+jnz sigo
+mov al, 0ffh
+out imr, al ;deshabilito las interrupciones
+sigo: 
+mov al, 0
+out cont, al
+mov al, eoi ;eoi es para finalizar
+out eoi, al ;siempre ambos
+pop bx ;recupero
+pop ax
+iret ;retorno
+org 2000h
+cli ;configuracion de ints
+mov al, 11111101b ;timer
+out imr, al ;se lo paso al imr
+mov al, Ntimer ;le digo donde esta
+out int1, al ;se lo paso al int
+mov al, ACUMULAR
+out comp, al
+mov al, 0
+out cont, al
+sti
+loop: cmp ACUMULAR, 0 
+jnz loop
+end

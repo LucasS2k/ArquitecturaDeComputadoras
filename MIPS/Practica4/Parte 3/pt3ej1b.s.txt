@@ -1,0 +1,19 @@
+.data
+S: .asciiz "ArquiTectuRa de ComPutaDoras"
+cant: .word 0
+cantcar: .word 0
+car: .ascii  "e"
+.code
+dadd  $t0, $0, $0
+lbu $t2, car($0)
+dadd $t3, $0,$0
+loop: lbu $t1,  S($t0) #me traigo un byte sin signo
+beqz $t1, fin
+bne $t1, $t2, noes
+daddi $t3,$t3, 1
+noes: daddi $t0,$t0,1
+j loop
+
+fin: sd  $t0, cant ($0)
+sd $t3, cantcar($0)
+halt

@@ -1,0 +1,31 @@
+org 1000h
+A db 8
+B db 5
+C db 4
+D db ?
+org 3000h
+CALC: push bx
+mov bx,sp
+add bx, 4 ;saltamos en el sp
+mov dl, [bx] ;guardamos en dl el valor que tiene C
+sub bx, 2 ;retrocedemos
+add dl, [bx] ;dl = C + B
+sub bx, 2 ;retrocedemos
+sub dl, [bx]
+pop bx
+ret
+org 2000h
+mov AL, A
+push AX
+mov AH, B
+push AX
+mov CL, C
+push AX
+call CALC
+mov D, DL
+pop ax
+pop ax
+pop ax
+hlt
+end
+

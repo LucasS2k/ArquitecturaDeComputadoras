@@ -1,0 +1,24 @@
+.data
+S: .asciiz "primer"
+T: .asciiz "primero"
+C: .word 0
+.code
+daddi $a0, $0, S
+daddi $a1, $0, T
+jal comparar
+sd $v0, C($0)
+halt
+comparar: dadd $v0, $0, $0
+loop: lbu  $t0, 0($a0)
+lbu $t1, 0 ($a1)
+beqz $t0, fina0
+beqz $t1, fin
+bne $t0, $t1, fin
+daddi  $v0, $v0 ,1
+daddi $a0, $a0, 1
+daddi $a1, $a1, 1
+j loop
+fina0: bnez $t1, fin
+daddi $v0, $0, -1
+
+fin: jr $ra

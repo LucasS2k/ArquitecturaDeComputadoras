@@ -1,0 +1,48 @@
+org 1000h
+string db "string a cambiar"
+org 3000h
+CONTAR_CAR: cmp AH, [bx]
+jnz noes
+inc CL
+noes: dec AL
+inc bx
+jnz CONTAR_CAR
+
+ES_MAYUS: cmp AL, 41h ;'A'
+js nomay
+push dx
+mov DL, 5Ah ; ''Z'
+cmp DL, AL
+pop dx
+js nomay
+mov AH, 0ffh ;valor para comparar
+jmp fin
+nomay: mov AH, 0 ;valor para comparar
+fin: ret
+
+A_MINUS: add CL, 20h ;sumar 20h lo convierte a minusculo
+ret
+
+STRING_A_MINUS: 
+push ax ;guardamos los registros
+push bx
+mov cl, al
+loop: mov al, [bx] ;traigo el caracter
+call ES_MAYUS ;verifico si es mayus
+cmp AH, 0ffh ;comparo si me devolvio un mayus
+jnz sigo ;caso contrario salto
+call A_MINUS ;llamo a la sub se que suma 20h
+mov [bx], al ;lo guardo en donde apunta bx
+sigo: inc bx ;avanzo
+dec cl ;decremento la cantidad de chars
+jnz loop ;si no termine, sigo
+pop bx ;recupero los registros
+pop ax
+ret ;vuelvo al pp
+
+org 2000h
+mov bx, offset string
+call STRING_A_MINUS
+mov CL, 0
+hlt
+end

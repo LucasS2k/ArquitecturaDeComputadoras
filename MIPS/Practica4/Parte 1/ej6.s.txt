@@ -1,0 +1,18 @@
+.data
+V: .word 10,5,20
+.code
+dadd $t0, $0, $0 #total
+dadd  $t2, $0, $0 #registro para moverse
+#primera iteracion
+ld $t1, V($t2) #guardo en t1 el valor del vector en la pos de t2
+dadd  $t0, $t0, $t1  #sumo a t0 lo que tengo en t1
+daddi $t2, $t2, 8 #incremento el puntero de t2 para avanzar en el vector
+#segunda iteracion
+ld $t1, V($t2) #guardo en t1 el valor del vector en la pos de t2
+dadd  $t0, $t0, $t1  #sumo a t0 lo que tengo en t1
+daddi $t2, $t2, 8 #incremento el puntero de t2 para avanzar en el vector
+#tercera iteracion
+ld $t1, V($t2) #guardo en t1 el valor del vector en la pos de t2
+dadd  $t0, $t0, $t1  #sumo a t0 lo que tengo en t1
+daddi $t2, $t2, 8 #incremento el puntero de t2 para avanzar en el vector
+halt

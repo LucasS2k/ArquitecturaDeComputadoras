@@ -1,0 +1,35 @@
+org 1000h
+A db 5
+B db 3
+RES dw ?
+org 3000h
+MUL: 
+push cx ;registros a usar
+push dx ;registro a usar
+ mov al, [bx]
+ mov bx, dx
+ mov cl, [bx]
+
+ mov dx, 0
+ mov ch, 0
+ mov bh, 0 ;limpiamos todo el registro
+ mov bl, al ;pero ponemos el numero en su low
+ cmp cl,0 ;verificamos mul x 0
+ jz fin
+
+ bucle: add dx,bx ;usamos todo el registro aunque su high este vacio
+ dec cl
+ jnz bucle
+ fin: mov bx, offset res
+ mov [bx],dx
+ pop dx
+ pop cx
+ret ;volvemos
+org 2000h
+mov bx, offset A
+mov dx, offset B
+call mul
+mov res, ax
+hlt
+end
+

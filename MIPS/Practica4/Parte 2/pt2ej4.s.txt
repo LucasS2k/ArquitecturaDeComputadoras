@@ -1,0 +1,18 @@
+.data
+base:.word 5
+exponente:.word 4
+result:.word 0
+.code
+daddi $a0, $0, base #direccion de base
+daddi $a1, $0, exponente #direccion de exp
+jal potencia
+sd $v0, result($zero) #resultado de la subrutina
+halt
+potencia: daddi $v0, $zero, 1 #inicializa en 1
+ld $t1, 0($a1) #guarda en el registro temporal el valor en la dirección de exponente
+ld $t0, 0($a0) #guarda en el registro temporal el valor en la dirección de base
+lazo: beqz $t1, terminar  #si  la cantidad de exponente llega a 0 significa que termino
+daddi $t1, $t1, -1  #decrementa exponente
+dmul $v0, $v0, $t0 #guarda en el parámetro de salida el resultado
+j lazo
+terminar: jr $ra #regresa al pp

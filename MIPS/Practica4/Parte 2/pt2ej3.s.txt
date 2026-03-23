@@ -1,0 +1,28 @@
+#.code
+#daddi $sp, $0, 0x400
+#daddi $t0, $0, 5
+#daddi $t1, $0, 8
+#push $t0
+#push $t1
+#pop $t0
+#pop $t1
+#halt
+
+.code
+daddi $sp, $0, 0x400
+daddi $t0, $0, 5
+daddi $t1, $0, 8
+;push $t0
+daddi $sp, $sp, -8
+sd $t0, 0($sp) #guardo t0 en la posición 0 (-8) del sp
+;push $t1
+daddi $sp, $sp, -8
+sd $t1, 0($sp)
+;pop $t0
+#FIFO first in first out
+ld $t0, 0($sp)
+daddi $sp, $sp, 8
+;pop $t1
+ld $t1, 0($sp)
+daddi $sp, $sp, 8
+halt

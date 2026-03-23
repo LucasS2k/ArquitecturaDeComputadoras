@@ -1,0 +1,35 @@
+.data
+valores1: .word 10,20,3,4,1,5,7,0,1,3
+valores2: .word 11,30,3,4,1,5,7,0,1,5
+cant: .word 10
+resultado: .word 0
+.code
+daddi $sp, $0, 0x400 #inicializo el sp
+daddi $a0,$0, valores1 #parametros
+daddi $a1,$0,valores2 #parametros
+ld $a2, cant ($0) #parametros
+jal contarmayores #llamo a la subrutina
+sd $v0, resultado ($0) #guardo el 0
+halt
+
+contarmayores:
+daddi $sp, $sp, -24 #tres registros para salvar 8*3
+sd $s1,0 ($sp) #guardo en 0 (-24)
+sd $s0,8 ($sp) #guardo en 8 (-16)
+sd $ra, 16 ($sp) #guardo en 16 (-8)
+dadd $s2, $0, $a2 #salvo los datos
+dadd $s1, $0, $a1 #salvo los datos 
+dadd $s0, $0, $a0 #salvo los datos
+loop: beqz $a2, fin #verifico si llegue a 0
+ld $a0, 0($s0) #me traigo el dato en  la pos $s0
+ld $a1, 0 ($s1) me traigo el dato en la pos $s1
+jal mayor #llamo a la subrutina
+beqz $v1, nosumo #si la subrutina retorna 0 evito sumar
+daddi $v0, $v0, 1 #caso contrario sumo 1
+nosumo: daddi $s2, $2, -1 #decremento la cantidad de iteraciones
+fin: ld $s1, 0 ($sp) #recupero los valores pusheados en el sp
+ld $s0, 8($sp)
+ld $ra, 16 ($sp)
+jr $ra #retorno
+mayor: slt $v1, $a0, $a1 #si a1 es mayor retorna 1
+jr $ra #vuelvo de la subrutina

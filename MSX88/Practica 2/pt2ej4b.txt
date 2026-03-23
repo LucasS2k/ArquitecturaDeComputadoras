@@ -1,0 +1,52 @@
+
+PA EQU 30h 
+PB EQU 31h
+CA EQU 32h
+CB EQU 33h
+ORG 1000h 
+msj db "org y arqui compu"
+fin db ?
+org 3000h
+inipio: mov al, 11111101b
+out ca, al
+mov al, 0
+ret
+
+org 3100h
+poll: in al, pa
+and al, 1
+jz poll
+ret
+
+org 3200h
+strobe0: in al, pa ; primero envio 0
+and al, 11111101b
+out pa, al
+ret
+org 3300h
+strobe1: in al, pa
+or al, 00000010b
+out pa, al
+ret
+
+org 3500h
+imprimir: push ax
+call poll
+pop ax
+out pb, al
+call strobe1
+call strobe0
+ret
+
+org 2000h
+call inipio
+call strobe0
+mov bx, offset msj
+mov al, offset fin - offset msj
+lazo: mov al, [bx]
+call imprimir
+inc bx
+dec cl
+jnz lazo
+int 0
+end

@@ -1,0 +1,27 @@
+.data
+V: .word 2,3,4,5
+E: .word 2
+result: .word 0
+.code
+daddi $sp,  $0, 0x400 #inicializamos sp
+ld $a0, V($0)
+ld $a1, E($0)
+daddi $sp, $sp, -8
+sd  $a0, 0($sp)
+
+daddi $sp, $sp, -8
+sd  $a1,0 ($sp)
+jal potencia
+sd  $v0, result($0)
+halt
+
+potencia: daddi $v0, $zero, 1
+ld $t1, 0($sp)
+daddi $sp, $sp, 8
+ld $t0, 0($sp)
+daddi $sp, $sp, 8
+lazo: beqz $t1, terminar
+daddi $t1, $t1, -1
+dmul $v0, $v0, $t0
+j lazo
+terminar: jr $ra

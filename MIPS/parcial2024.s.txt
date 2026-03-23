@@ -1,0 +1,41 @@
+.data
+string: .asciiz  "cadenadetexto"
+vocales: .asciiz "aeiou"
+cant: .word 13
+.code
+daddi $a0, $0, string
+daddi  $a1, $0, vocales
+ld $a2, cant ($0)
+daddi $sp, $0, 0x400
+jal cambiar
+halt
+
+cambiar: 
+continuo: beqz $s2, finc
+daddi $sp, $sp, -32
+sd $a0, 0 ($sp)
+sd $a1, 8 ($sp)
+sd $a2, 16 ($sp) 
+sd $ra, 24 ($sp)
+
+dadd $s2, $0, $a2
+dadd $s1, $0, $a1
+dadd $s0, $0, $a0
+jal esvocal
+beqz $v0, otra
+daddi $t1, $0, #
+sd $t1, 0 ($s2) 
+otra: daddi $s2, $s2, 1 
+jal continuo
+finc:
+
+
+
+esvocal:
+sigo: beqz $t2, fin
+ld $t1, vocales ($t2)
+beq $s1, $t1, sumo
+daddi $t2, $t2, 1
+sumo: daddi $v0, $0, 1
+jal sigo
+fin: jr $ra

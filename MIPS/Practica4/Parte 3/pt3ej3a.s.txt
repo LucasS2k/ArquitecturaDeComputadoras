@@ -1,0 +1,15 @@
+.data
+S: .asciiz "string"
+cant: .word 0
+.code
+daddi $a0, $0, S
+jal longitud
+sd $v0, cant($0)
+halt
+longitud: daddi $v0, $0, 0
+sigo: lbu $t1, 0 ($a0)
+beqz $t1, fin
+daddi $v0, $v0, 1
+daddi $a0,$a0,1
+j sigo
+fin: jr $ra

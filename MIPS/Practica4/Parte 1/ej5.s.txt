@@ -1,0 +1,10 @@
+.data
+A: .word 10
+B: .word 5
+C: .word 0
+.code
+ld r1, A($0)
+ld r2, B($0)
+dadd r3, r1,r2
+sd r3,C($0)
+halt

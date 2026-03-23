@@ -1,0 +1,51 @@
+A)
+#v0: devuelve 1 si a0 es impar y 0 dlc
+#a0: número entero cualquiera
+esimpar: andi $v0, $a0, 1
+jr $ra
+#v0: devuelve 1 si a0 es par y 0 dlc
+#a0: número entero cualquiera
+espar: jal esimpar #no guarda la dirección antes de llamar a la otra subrutina
+#truco: espar = 1 - esimpar
+daddi $s0, $0, 1
+dsub $v0, $s0, $v0
+jr $ra
+
+B)
+#v0: devuelve la cantidad de bits 0
+que tiene un número de 64 bits
+#a0: número entero cualquiera
+cant0: daddi $t0, $0, 0
+daddi $t1, $0, 64
+loop:jal espar
+dadd $t0,$t0,$v0
+#desplazo a la derecha
+#para quitar el último bit
+dsrl $a0, $a0, 1
+daddi $t1, $t1, -1
+bnez $t1, loop
+jr $ra
+
+
+C)
+#v0: volumen de un cubo
+#a0: long del lado lado del cubo
+vol: daddi $sp, $sp, -16
+sd $ra, 0($sp)
+sd $s0, 8($sp)
+dadd $s0, $0, $a0
+dmul $s0,$a0,$a0
+dmul $s0,$s0,$a0
+daddi $v0,$s0,0
+ld $ra, 0($sp)
+ld $s0, 8($sp)
+daddi $sp, $sp, 16
+jr $ra
+#v0: diferencia de volumen de los cubos
+#a0: long del lado del cubo más grande
+#a1: long del lado del cubo más chico
+diffvol: jal vol  #deberia guardar el retorno
+daddi $t0,$v0,0
+daddi $a0,$a1,0
+jal vol
+dsub $v0

@@ -1,0 +1,14 @@
+.data
+V: .word 2,4,3,5,6,7,8,9,10
+.code
+dadd $t0, $0, $0
+dadd $t1, $0, $0
+dadd $t2, $0, $0
+daddi $t3, $0, 10
+loop: ld $t0, V ($t2)
+dadd $t1, $t0, $t0 #sumarlo consigo mismo es como multiplicar x2 pero Tambien se puede hacer dsll t1 t1 1
+sd $t1, V ($t2)
+daddi $t2, $t2, 8
+daddi $t3, $t3, -1
+bnez $t3, loop
+halt

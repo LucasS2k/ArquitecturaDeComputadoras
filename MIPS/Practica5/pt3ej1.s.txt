@@ -1,0 +1,15 @@
+ .data 
+ A: .word 2
+ B: .word 1 
+ C: .word 0
+.code
+ ld $t2, B($0)
+ld $t1, A($0) 
+daddi $t3, $0, 1
+nop
+bne $t1, $t2, no
+j fin #salto incondicional siempre atasca
+no: daddi $t3, $0, 0
+fin: sd $t3, C($0)
+halt
+#14 ciclos 8 instrucciones 1 atascos por bt

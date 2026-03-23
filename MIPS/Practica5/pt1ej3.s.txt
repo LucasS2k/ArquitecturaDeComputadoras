@@ -1,0 +1,10 @@
+.data
+.code
+daddi r2,r3,5
+dsub r4,r3,r5 #no se produce atastco ya que r3 no espera ser modificado por la instrucción previa
+xor r6,r3,r5 #idem con r5
+nop
+halt
+
+#5 instrucciones 9 ciclos
+#cpi = instrucciones + 4 + atascos / instrucciones = 9/5

@@ -1,0 +1,31 @@
+rg 1000h
+A db 5
+B db 3
+RES dw ?
+org 3000h
+MUL: 
+push cx ;registros a usar
+push dx ;registro a usar
+mov cx, 0 ;limpiamos por las dudas
+mov cl, ah ;pasamos el valor
+mov dx, 0 ;limpiamos el registro que guarda el total
+cmp cl, 0 ;verificamos multiplicacion por 0
+jz terminar ;de ser asi terminamos
+push bx ;guardamos el registro
+mov bh, 0 ;limpiamos registro
+mov bl, al ;pasamos el valor
+bucle: add dx, bx ;sumamos dx+bx = cl cantidad de veces 
+dec cl ;decrementamos el loop
+jnz bucle ;si no es cero seguimos
+pop bx ;recuperamos registro
+terminar: mov ax, dx ;pasamos valor al pp
+pop dx ;recuperamos registro
+pop cx ;recuperamos registro
+ret ;volvemos
+org 2000h
+mov AL, A ;traemos valor de memoria
+mov AH, B 
+call MUL ;llamamos a la subrutina
+mov RES, AX ;guardamos el resultado en memoria
+hlt
+end

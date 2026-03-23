@@ -1,0 +1,19 @@
+.data
+V: .word 10,11,2,3,4,5,8,6,4,3
+W: .word 0
+.code
+dadd $t0,$0,$0
+daddi $t1, $0, 10
+dadd $t2,$0,$0
+dadd $t3,$0,$0
+daddi $t4, $0, 1
+dadd $t5, $0,$0
+loop: ld $t0, V($t2)
+and $t3, $t0, $t4 #si es 1 impar
+beqz $t3, par
+sd $t0, W($t5) #guardo el valor de  t0 en el vector
+daddi $t5, $t5, 8 #incremento la posicion en dicho vector
+par: daddi $t1,  $t1, -1 #decremento las iteraciones
+daddi $t2, $t2, 8 #incremento la pos en el vector original
+bnez $t1, loop
+halt

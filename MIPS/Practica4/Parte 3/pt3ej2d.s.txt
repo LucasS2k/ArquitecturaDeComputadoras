@@ -1,0 +1,17 @@
+.data
+V: .word 0
+.code
+dadd $t0, $0, $0
+dadd $t1, $0, $0
+dadd $t2, $0, $0
+daddi $t3, $0, 10
+daddi  $t4, $0, 1 #mascara
+dadd $t5, $0, $0
+loop: and $t5, $t0, $t4 #and, si da 1 es impar
+beqz $t5, par #sino salta a par evitando guardarlo en el vector
+impar: ld $t5, V ($t2) #guardo en el  V
+par: daddi $t5, $0, 1 #incremento el numero
+daddi $t2, $t2, 8 #incremento el puntero
+daddi $t3, $t3, -1 #decremento las iteraciones
+bnez $t3, loop #si no termine vuelvo
+halt

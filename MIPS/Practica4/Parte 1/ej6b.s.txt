@@ -1,0 +1,12 @@
+.data
+V: .word 5,10,20
+.code
+dadd $t0, $0,$0
+dadd $t2, $0,$0
+daddi $t3, $0, 3 #contador de loops
+loop: ld $t1, V($t2)
+dadd $t0, $t0, $t1
+daddi $t2,$t2, 8 #incremento el puntero
+daddi $t3,$t3, -1  #decremento la cantidad de iteraciones
+bnez $t3, loop
+halt

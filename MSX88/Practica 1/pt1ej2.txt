@@ -1,0 +1,17 @@
+org 1000h
+C db 'a'
+RES db 1
+org 2000h
+mov bx, offset C
+mov al, [bx]
+cmp al, 'A' ;al - 65
+js noes
+mov ah, 'Z'
+cmp ah, al ;90 - al
+js noes
+sies: mov RES, 0ffh
+jmp fin
+noes: mov RES, 0
+fin:
+hlt
+END

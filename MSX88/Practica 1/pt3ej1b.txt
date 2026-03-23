@@ -1,0 +1,12 @@
+ORG 1000H
+
+ org 3000h 
+ rutina: mov bx,3 ;7ffc
+ ret  ;7ffe
+ org 2000h 
+ push ax ;7ffe
+ call rutina ;7ffc
+ pop bx ;8000
+ hlt
+ INT 0
+END

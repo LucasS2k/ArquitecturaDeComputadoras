@@ -1,0 +1,9 @@
+org 1000h
+CHAR db 'a'
+org 2000h
+mov bx, offset CHAR
+mov al, [bx]
+sub al, 32
+mov [bx], al
+hlt
+END

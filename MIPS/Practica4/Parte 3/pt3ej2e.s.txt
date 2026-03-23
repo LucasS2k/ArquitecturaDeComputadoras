@@ -1,0 +1,17 @@
+.data
+V: .word 0
+.code
+dadd $t0, $0, $0
+daddi $t1, $0, 1
+dadd $t2, $0, $0
+dadd $t3, $0, $0
+daddi $t4, $0, 10
+daddi $t5, $0, 0
+loop: dadd $t3, $t5, $t1 #sumo el anterior con el actual
+sd $t3, V ($t2) #lo guardo en el vector
+dadd $t5, $0, $t1 #guardo el previo
+dadd $t1, $0, $t3 #guardo el resultado del actual
+daddi $t2, $t2, 8 #incremento la pos
+daddi $t4, $t4, -1 decremento los intentos
+bnez $t4, loop
+halt
