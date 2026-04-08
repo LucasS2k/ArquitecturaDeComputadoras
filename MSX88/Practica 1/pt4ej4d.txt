@@ -1,0 +1,36 @@
+org 1000h
+A db 5
+B db 3
+RES dw ?
+org 3000h
+MUL: 
+push bx 
+;sp es el valor de retorno
+;sp + 2 es el valor de b
+;sp + 4 es el valor de a para no pisar el retorno ni B
+mov bx, sp
+ mov ch, [bx + 4]
+ mov cl, [bx + 6]
+
+ mov ax, 0
+ mov dx,0
+ mov dl,cl
+ mov cl, ch
+ mov ch, 0
+ cmp cl,0 ;verificamos mul x 0
+ jz fin
+
+ bucle: add ax,dx ;usamos todo el registro aunque su high este vacio
+ dec cl
+ jnz bucle
+ fin:
+ pop bx
+ret ;volvemos
+org 2000h
+mov bx, offset A
+mov dx, offset B
+call mul
+mov res, ax
+hlt
+end
+

@@ -1,0 +1,22 @@
+pa equ 30h
+pb equ 31h
+ca equ 32h 
+cb equ 33h
+org 1000h
+
+org 3000h
+rotarizq: 
+out pb, al
+add al, al
+jnz fin
+mov al, 1
+fin: 
+ret
+org 2000h
+mov al, 00000000b
+out cb, al
+mov al, 00000001b
+loop: call rotarizq
+jmp loop
+hlt
+end

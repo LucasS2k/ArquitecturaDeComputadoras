@@ -1,0 +1,18 @@
+org 1000h
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+org 3000h
+flanco_ascendente: in al, pa
+and al, 11111101b
+out pa, al
+or al, 00000010b
+out pa, al
+ret
+
+org 2000h
+
+hlt
+end
+

@@ -1,0 +1,63 @@
+org 1000h
+ING db ?
+RTA db ?
+MSJ db "perdiste el string era"
+MSJW db "ganaste"
+MSJI db "ingresa la palabra a adivinar"
+FIN db ?
+INTENTOS db 50
+org 3000h
+ingreso: push bx
+mov bx, offset ing
+loop: int 6
+mov al, [bx]
+cmp al, '.'
+jz fini
+inc bx
+jmp loop
+fini: 
+pop bx
+ret
+
+
+
+org 2000h
+mov bx, offset msji
+mov al, offset fin - offset msji
+int 7
+
+call ingreso
+
+mov bx, offset ING
+mov cl, offset RTA - offset ING
+adivinar:
+int 6
+push bx ;guardo la pos del ingresado
+mov bx, offset rta ;puntero a la direccion de la respuesta
+mov dl, [bx] ;guardo ese char en dl
+pop bx ; recuperamos la pos del ingresado
+cmp dl, [bx] ;comparamos las letras
+jnz error
+mov al,1 ;imprimo 1 char
+int 7 ;para mostrar
+inc bx
+dec cl
+jz ganador ;si llego al final es porque ganó
+jmp adivinar
+
+error: dec intentos ;50 intentos
+jz perdedor ;si se acaban pierde
+jmp adivinar ;caso contrario sigue jugando
+
+ganador: mov bx, offset msjw
+mov al, offset msji - offset msjw
+int 7
+
+perdedor: mov bx, offset msj
+mov al, offset msjw - offset msj
+int 7
+mov bx, offset ING
+mov al, offset RTA - offset ing
+int 7
+hlt
+end

@@ -4,8 +4,8 @@ pb equ 31h
 ca equ 32h
 cb equ 33h
 org 1000h 
-msj db "ORGANIZACION Y ARQUITECTURA DE COMPUTADORAS"
-fin db ?
+msj db ?
+cant db 5
 org 3000h
 ini_pio:
 mov al, 00000001b ;ponemos el 1 en el busy
@@ -31,7 +31,8 @@ out pa, al
 ret
 
 org 3400h
-imprimirchar:
+imprimirchar: int 6
+dec cant
 push ax ;guardamos el char
 call poll
 pop ax 
@@ -39,15 +40,13 @@ mov al, [bx] ;recuperamos char
 out pb, al ;pasamos el char a pb
 call flanco
 inc bx ; avanzamos en el string
-dec cl ; decrementamos la cantidad de chars
-cmp cl, 0
+cmp cant, 0
 jnz imprimirchar
 ret
 
 org 2000h
 call ini_pio ;config
 mov bx, offset msj
-mov cl, offset fin - offset msj
 call imprimirchar ;sub
 hlt
 end

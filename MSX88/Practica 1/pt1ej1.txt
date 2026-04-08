@@ -1,14 +1,39 @@
-org 1000h
-mensaje DB "mensaje de prueba"
-cant db 0
-org 2000h
-mov bx, offset mensaje
-lazo: mov al, [bx] 
-cmp al , 'a'
-jnz sigo
-inc cant
-sigo: inc bx
-cmp bx, offset cant
-jnz lazo
-hlt
-END
+; PB EQU 31h
+; CB EQU 33h
+; ORG 2000H
+; mov al, 00000000b
+; out CB, al
+; mov al, 0Fh
+; out PB, al
+; int 0
+; end
+
+; PA equ 30h
+; CA EQU 32h
+; ORG 1000h
+; msj db "Apagadas"
+; ORG 2000H
+; mov al, 0FFh
+; out CA, al
+; in al, PA
+; cmp al, 0
+; jnz fin
+; mov al, 8
+; mov bx , offset msj
+; int 7
+; fin: int 0
+; end
+
+; PA equ 30h
+; PB EQU 31h
+; CA EQU 32h
+; CB equ 33h
+; ORG 2000h
+; mov al, 11111111b
+; out ca, al
+; mov al, 00000000b
+; out CB, al
+; in al, PA
+; out PB, al
+; int 0
+; end

@@ -1,28 +1,30 @@
+pa equ 30h
 pb equ 31h
+ca equ 32h
 cb equ 33h
-
-org 1000h
-cadena db "unlp"
-
+org 1000h 
+msj db "UNLP"
 fin db ?
+org 3000h
+
+
+
 org 2000h
-mov al,0
+mov al, 0
 out cb, al
-
-mov  bx,offset cadena
-mov cl, offset fin  - offset cadena
-
-loop: mov al,0 
-out pb,al
-
+mov bx, offset msj
+mov cl, offset fin - offset msj
+loop:
 mov al, [bx]
 out pb, al
+mov al, 0
+out pb, al
+
 inc bx
 dec cl
 jnz loop
-
 mov al, 255
 out pb, al
-org 3000h
-
+hlt
 end
+

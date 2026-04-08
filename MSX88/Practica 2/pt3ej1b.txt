@@ -1,0 +1,19 @@
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+org 2000h
+mov al, 00000000b
+out cb, al
+
+mov al, 11111111b
+out ca, al
+
+loop: mov al, 0ffh
+out pb, al
+in al, pa
+
+cmp al,0
+jnz loop
+hlt
+end

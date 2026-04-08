@@ -1,0 +1,37 @@
+
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+dato equ 40h
+estado equ 41h
+org 1000h 
+msj db "ingenieria e informatica"
+fin db ?
+org 3000h
+poll: in al, estado
+and al, 1
+jnz poll
+ret
+
+org 3200h
+imprimir_char_hnd: push ax
+call poll
+pop ax
+out dato, al
+ret
+
+org 2000h
+in al, estado
+and al, 01111111b
+out estado, al
+mov bx, offset msj
+mov cl, offset fin - offset msj
+lazo: mov al, [bx]
+call imprimir_char_hnd
+inc bx
+dec cl
+jnz lazo
+hlt
+end
+

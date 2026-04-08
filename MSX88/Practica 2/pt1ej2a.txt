@@ -2,18 +2,15 @@
  ;Patrón de Luces Fijo
  ;Escribir un programa que encienda las luces con el patrón 11000011, o sea, solo
  ;las primeras y las últimas dos luces deben prenderse, y el resto deben apagarse.
+org 1000h
 PB equ 31h
 CB equ 33h
-        org 1000h
-inicio  db 1
+org 2000h
+mov al, 00000000b
+out CB, al
+mov al, 11000011b
+out PB, al
+hlt
+end
 
-        org 2000h
-      
 
-  mov al, 00000000b
-        out CB, al
-        mov al, 11000011b
-        out PB, al
-        int 0
-    hlt
-        end
