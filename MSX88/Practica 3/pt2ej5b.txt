@@ -1,0 +1,49 @@
+cont equ 10h
+comp equ 11h
+eoi equ 20h
+imr equ 21h
+int1 equ 25h
+ntimer equ 20
+org 80
+idtimer dw ruttimer
+org 1000h
+msj db "vamos las interrupciones"
+fin db ?
+cant db 5
+ORG 3000H
+ruttimer:
+push ax
+push bx
+mov bx, offset msj
+mov al, offset fin - offset msj
+int 7
+dec cant
+jnz sigo
+mov al, 11111111b
+out imr, al
+
+sigo: mov al, 0
+out cont, al
+mov al, 20h
+out eoi, al
+pop bx
+pop ax
+iret
+ORG 2000H
+
+
+cli
+mov al, 11111101b
+out imr, al
+mov al, ntimer
+out int1, al
+
+mov al, 2
+out comp, al
+mov al, 0
+out cont, al
+sti
+loop: 
+jmp loop
+hlt
+END
