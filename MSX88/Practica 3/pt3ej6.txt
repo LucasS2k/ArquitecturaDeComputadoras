@@ -1,0 +1,56 @@
+eoi equ 20h
+imr equ 21h
+int0 equ 24h
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+dato equ 40h
+estado equ 41h
+org 60
+ipf10 dw descender
+org 1000h
+msj db "ingrese un numero del 1 al 9"
+finmsj db ?
+ing db 0
+org 3000h
+leer_digito:
+mov bx, offset ing
+int 6
+mov al, [bx]
+sub al, 1
+js leer_digito
+mov al, 9
+sub al, [bx]
+js leer_digito
+mov al, [bx]
+ret
+
+org 3200h
+descender: push bx
+add bx, 4
+mov al, [bx]
+sigo: out pb, al
+poll: in al , estado
+and al, 1
+jnz poll
+mov al, ah
+out dato, al
+dec al
+cmp al, 0
+jnz sigo
+mov al, 20h
+out eoi, al
+iret
+org 2000h
+cli 
+mov al, 11111110b
+out imr, al
+mov al, 15
+out int0, al
+sti
+call leer_digito
+mov ah, 0
+push ax
+hlt
+end

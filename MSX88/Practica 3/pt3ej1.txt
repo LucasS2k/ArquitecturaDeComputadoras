@@ -1,0 +1,47 @@
+eoi equ 20h
+imr equ 21h
+int0 equ 24h
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+nf10 equ 15
+org 60
+ipf10 dw rutf10
+org 1000h
+string db ?
+finstring db 0
+org 3000h
+rutf10:
+push ax
+mov finstring, 1
+mov al, 11111111b
+out imr, al
+mov bx, offset string
+mov al, [bx]
+out pa, al
+in al, eoi
+out eoi, al
+pop ax
+iret
+org 2000h
+cli
+mov al, 11111110b
+out imr, al
+mov al, nf10
+out int0, al
+
+mov al, 00000000b
+out ca, al
+mov al, 00000001b
+out cb, al
+sti
+mov bx, offset string
+loop: 
+cmp finstring, 1
+jz fin
+int 6 
+inc bx
+fin:
+hlt
+end

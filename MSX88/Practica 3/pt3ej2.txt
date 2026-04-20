@@ -1,0 +1,32 @@
+eoi equ 20h
+imr equ 21h
+int0 equ 24h
+pb equ 31h
+cb equ 33h
+nf10 equ 15
+org 60
+ipf10 dw rutf10
+org 1000h
+org 3000h
+rutf10:
+in al, pb
+not al
+out pb, al
+in al, eoi
+out eoi, al
+iret
+org 2000h
+cli 
+mov al, 11111110b
+out imr, al
+mov al, nf10
+out int0, al
+mov al, 00000000b
+out cb, al
+mov al, 11111111b
+out pb, al
+sti
+loop: 
+jmp loop
+hlt
+end

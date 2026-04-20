@@ -1,0 +1,67 @@
+eoi equ 20h
+imr equ 21h
+int0 equ 24h
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+org 60
+ipf10 dw subf10
+org 1000h
+msj db "PRESIONE F10 PARA COMENZAR"
+fin db ?
+ing db ?
+fining db ?
+flag db 0
+org 3000h
+subf10:
+mov cl, 10
+mov bx, offset ing
+int 6
+inc bx
+dec cl
+jnz subf10
+mov flag, 1
+mov al, 20h
+out eoi, al
+iret
+
+pio: 
+mov al, 00000000b
+out ca, al
+mov al, 00000001b; busy 
+out cb, al
+ret
+
+imprimir:
+push bx
+add bx, 2
+in al, pb
+and al, 1
+jnz imprimir
+lazo: 
+mov al, [bx]
+out pb, al ; entra por pb el dato
+inc bx
+dec cx
+jnz lazo
+pop bx
+ret
+
+org 2000h
+
+cli 
+mov al, 11111110b
+out imr, al
+mov al, 15
+out int0, al
+sti
+call pio
+mov bx, offset msj
+mov al, offset fin - offset msj
+int 7
+loop: cmp flag, 1
+jnz loop
+
+hlt
+end

@@ -1,0 +1,38 @@
+eoi equ 20h
+imr equ 21h
+int0 equ 24h
+org 60
+ipf10 dw rutf10
+org 1000h
+num db 0
+flag db 0
+org 3000h
+rutf10:
+mov bx, offset num
+mov cl, 1
+int 7
+mov al, 11111111b
+out imr, al
+inc flag
+mov al, eoi
+out eoi,al
+iret
+org 2000h
+
+cli
+mov al, 11111110b
+out imr, al
+mov al, 15
+out int0, al
+sti
+loop:
+mov al, num
+inc num
+cmp num, 9
+jnz sigo
+mov al, 0
+sigo:
+cmp flag, 1
+jnz loop
+hlt
+END

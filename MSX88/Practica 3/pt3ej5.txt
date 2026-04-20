@@ -1,0 +1,47 @@
+cont equ 10h
+comp equ 11h
+eoi equ 20h
+imr equ 21h
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+org 1000h
+
+org 3000h
+luces12:
+push bx
+mov bx, sp
+add bx, 4
+mov al, [bx]
+and al, 10000000b
+jnz fin
+mov al, 11111111b
+out pb, al
+mov al, 12
+out comp, al
+mov al, 0
+out cont, al
+sigo: in al, cont
+cmp al, 12
+jnz sigo
+mov al, 00000000b
+out pb, al
+fin: pop bx
+ret
+org 2000h
+cli
+mov al, 11111101b
+out imr, al
+sti
+mov al, 11111111b
+out ca, al
+mov al, 00000000b
+out cb, al
+hlt
+in al, pa
+mov ah, 0
+push ax
+call luces12
+hlt
+end
