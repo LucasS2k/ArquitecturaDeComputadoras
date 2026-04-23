@@ -1,0 +1,55 @@
+cont equ 10h
+comp equ 11h
+eoi equ 20h
+imr equ 21h
+pa equ 30h
+pb equ 31h
+ca equ 32h
+cb equ 33h
+dato equ 40h
+estado equ 41h
+
+org 60
+nf10 dw rutf10
+org 1000h
+string db "hola!"
+flag db 0
+org 3000h
+rutf10:
+mov al, 11111111b
+out imr,al
+mov al, 20h
+out eoi, al
+iret
+
+esperar:
+mov al, 0
+out cont, al
+mov al, 5
+out comp, al
+poll: in al, cont
+sub al, 5
+jnz poll
+ret
+org 2000h
+cli
+mov al, 11111110b
+out imr, al
+mov al, 5
+out comp, al
+mov al, 0
+out cont, al
+mov al, 00000000b
+out cb, al
+sti
+mov bx, offset string
+loop: mov al, [bx]
+cmp al, 0
+jz fin
+out pb, al
+call esperar
+inc bx
+jmp loop
+fin: 
+hlt
+end

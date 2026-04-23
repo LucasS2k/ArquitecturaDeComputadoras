@@ -1,0 +1,58 @@
+eoi equ 20h
+imr equ 21h
+int1 equ 25h
+cont equ 10h
+comp equ 11h
+dato equ 40h
+estado equ 41h
+org 60
+dw ruttimer
+org 1000h
+msj db "ingrese 40 caracteres"
+msjfin db ?
+ing db ?
+org 3000h
+ruttimer:
+espero: 
+in al, estado
+and al, 00000010b
+jnz espero
+mov al, [bx]
+out dato, al
+inc bx
+dec dl
+cmp dl, 0
+jnz fin
+mov al, 11111111b
+out imr, al
+fin: mov al, 0
+out cont, al
+mov al, 20h
+out imr, al
+iret
+org 2000h
+mov dl, 40
+mov bx, offset msj
+mov cl, offset msjfin - offset msj
+int 7
+mov cl, 40
+mov bx, offset ing
+lazo: int 6
+inc bx
+dec cl
+jnz lazo
+cli
+mov al, 11111101b
+out imr, al
+mov al, 15
+out int1, al
+mov al, 0
+out cont, al
+mov al, 1
+out comp, al
+sti
+mov bx, offset ing
+loop2: cmp dl, 0
+jnz loop2
+hlt
+end
